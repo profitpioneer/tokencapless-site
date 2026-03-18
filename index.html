@@ -3,100 +3,157 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TOKENCAPLESS | The Future of Infinite Context</title>
+    <title>TOKENCAPLESS.COM | Think Beyond</title>
     <style>
+        /* 核心定义：高级 AI 科技暗黑系 */
+        :root {
+            --bg-color: #030306; 
+            --glass-base: rgba(17, 17, 25, 0.4); 
+            --text-base: #a0a0b0; 
+            --primary-gradient: linear-gradient(135deg, #fff 0%, #a855f7 55%, #7e22ce 100%);
+        }
+
         body, html {
             margin: 0;
             padding: 0;
             width: 100%;
             height: 100%;
-            background-color: #050505; /* 纯深黑 */
-            color: #d1d1d1;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-base);
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             overflow: hidden;
+            position: relative;
         }
 
-        .container {
-            text-align: left; /* 愿景描述建议左对齐，增加阅读逻辑感 */
-            max-width: 650px;
-            padding: 40px;
+        /* 背景动态微光 - 增加呼吸感 */
+        body::before {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle at center, rgba(168, 85, 247, 0.08) 0%, rgba(0,0,0,0) 70%);
+            border-radius: 50%;
+            top: 15%;
+            left: 10%;
+            animation: glow-float 25s infinite alternate;
+            z-index: 0;
+        }
+
+        @keyframes glow-float {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(120px, 80px); }
+        }
+
+        /* 2.0 经典毛玻璃方框 */
+        .glass-card {
+            position: relative;
+            z-index: 10;
+            padding: 65px 85px;
+            background: var(--glass-base);
+            border-radius: 32px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px) saturate(160%);
+            -webkit-backdrop-filter: blur(20px) saturate(160%);
+            text-align: left;
+            max-width: 720px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
+            will-change: transform;
         }
 
         .brand {
             font-size: 0.8rem;
             letter-spacing: 0.6em;
-            color: #333;
+            color: rgba(255, 255, 255, 0.3);
             text-transform: uppercase;
-            margin-bottom: 50px;
+            margin-bottom: 55px;
+            font-weight: 300;
         }
 
         .slogan {
-            font-size: 2.8rem;
-            line-height: 1.1;
-            font-weight: 200;
-            color: #888;
-            margin-bottom: 40px;
-        }
-
-        .slogan b {
+            font-size: clamp(2.2rem, 5vw, 3.4rem);
+            line-height: 1.15;
+            font-weight: 700;
             color: #fff;
-            font-weight: 600;
+            margin: 0;
+            letter-spacing: -1.5px;
         }
 
-        /* 愿景描述：保持克制，充满科技感 */
+        .highlight {
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: inline-block;
+        }
+
         .vision {
-            font-size: 1.05rem;
+            font-size: 1.1rem;
             line-height: 1.8;
-            color: #666;
+            color: var(--text-base);
             font-weight: 300;
-            border-left: 2px solid #222;
-            padding-left: 25px;
+            border-left: 2px solid rgba(168, 85, 247, 0.3);
+            padding-left: 30px;
+            margin: 45px 0 60px 0;
         }
 
         .vision strong {
-            color: #aaa;
+            color: #e2e2e2;
+            font-weight: 500;
         }
 
         .footer {
-            position: absolute;
-            bottom: 40px;
-            left: 40px;
-            font-family: 'Courier New', monospace;
-            font-size: 0.75rem;
-            color: #222;
-            letter-spacing: 2px;
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.1);
+            letter-spacing: 4px;
+            text-transform: uppercase;
         }
 
         @media (max-width: 768px) {
-            .container { padding: 30px; }
-            .slogan { font-size: 1.8rem; }
-            .vision { font-size: 0.95rem; }
+            .glass-card { padding: 45px 30px; margin: 20px; border-radius: 24px; }
+            .slogan { font-size: 2.2rem; }
+            .vision { font-size: 1rem; margin: 35px 0; }
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
+    <div class="glass-card" id="glass">
         <div class="brand">TOKENCAPLESS.COM</div>
         
-        <div class="slogan">
-            Break the <b>context barrier</b>.<br>
-            Think beyond the <b>limits</b>.
-        </div>
+        <h1 class="slogan">
+            Break the <span class="highlight">context barrier</span>.<br>
+            Think beyond the <span class="highlight">limits</span>.
+        </h1>
 
         <div class="vision">
             We believe that <strong>intelligence should never be truncated</strong>. 
             In the era of autonomous agents, the flow of logic is the new energy. 
             Tokencapless is dedicated to a world where <strong>cognitive cost is no longer a constraint</strong> for innovation.
         </div>
+
+        <div class="footer">
+            PROJECT INITIATED BY: PROFIT PIONEER
+        </div>
     </div>
 
-    <div class="footer">
-        PROJECT INITIATED BY: PROFIT PIONEER
-    </div>
+    <script>
+        const glass = document.getElementById('glass');
+        
+        // 恢复 2.0 经典的 3D 视差效果
+        document.addEventListener('mousemove', (e) => {
+            const xAxis = (window.innerWidth / 2 - e.pageX) / 35;
+            const yAxis = (window.innerHeight / 2 - e.pageY) / 35;
+            glass.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+            glass.style.boxShadow = `${-xAxis}px ${yAxis}px 50px rgba(168, 85, 247, 0.1)`;
+        });
 
+        document.addEventListener('mouseleave', () => {
+            glass.style.transform = `rotateY(0deg) rotateX(0deg)`;
+        });
+    </script>
 </body>
 </html>
