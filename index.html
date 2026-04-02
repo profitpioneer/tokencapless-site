@@ -1,379 +1,408 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TOKENCAPLESS.COM | Think Beyond</title>
-    <style>
-        :root {
-            --bg-color: #030306; 
-            --glass-base: rgba(17, 17, 25, 0.35); 
-            --text-base: #a0a0b0; 
-            --primary-gradient: linear-gradient(135deg, #fff 0%, #a855f7 55%, #7e22ce 100%);
-            --wave-color-1: rgba(168, 85, 247, 0.03);
-            --wave-color-2: rgba(126, 34, 206, 0.02);
-            --wave-color-3: rgba(88, 28, 135, 0.015);
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TOKENCAPLESS.COM | Think Beyond</title>
+  <style>
+    :root{
+      --bg0: #040406;
+      --bg1: #08080d;
+      --bg2: #0c0c14;
+      --text: rgba(255,255,255,.94);
+      --muted: rgba(255,255,255,.58);
+      --soft: rgba(255,255,255,.10);
+      --link: #7aa7ff;
+    }
 
-        body, html {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            background-color: var(--bg-color);
-            color: var(--text-base);
-            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-            position: relative;
-        }
+    *{
+      box-sizing: border-box;
+    }
 
-        /* ========== 海浪动画背景 ========== */
-        .ocean {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            z-index: 0;
-            overflow: hidden;
-        }
+    html, body{
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      color: var(--text);
+      font-family: Inter, "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background:
+        radial-gradient(circle at 50% 30%, rgba(109, 91, 255, 0.12) 0%, transparent 28%),
+        radial-gradient(circle at 20% 20%, rgba(66, 107, 255, 0.10) 0%, transparent 20%),
+        radial-gradient(circle at 80% 70%, rgba(255, 122, 89, 0.08) 0%, transparent 22%),
+        linear-gradient(180deg, var(--bg2) 0%, var(--bg1) 40%, var(--bg0) 100%);
+    }
 
-        .wave {
-            position: absolute;
-            width: 200%;
-            height: 100%;
-            opacity: 1;
-        }
+    body{
+      position: relative;
+    }
 
-        .wave:nth-of-type(1) {
-            background: linear-gradient(90deg, 
-                transparent 0%,
-                var(--wave-color-1) 25%,
-                transparent 50%,
-                var(--wave-color-1) 75%,
-                transparent 100%);
-            animation: wave-flow 28s cubic-bezier(0.36, 0.45, 0.63, 0.53) infinite;
-            bottom: 0;
-        }
+    .noise{
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.06;
+      background-image:
+        linear-gradient(rgba(255,255,255,.12) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.10) 1px, transparent 1px);
+      background-size: 180px 180px;
+      mask-image: radial-gradient(circle at center, black 25%, transparent 92%);
+    }
 
-        .wave:nth-of-type(2) {
-            background: linear-gradient(90deg,
-                transparent 0%,
-                var(--wave-color-2) 30%,
-                transparent 60%,
-                var(--wave-color-2) 85%,
-                transparent 100%);
-            animation: wave-flow 35s cubic-bezier(0.36, 0.45, 0.63, 0.53) -5s infinite;
-            bottom: 10%;
-            opacity: 0.8;
-        }
+    .wave-layer{
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 1;
+    }
 
-        .wave:nth-of-type(3) {
-            background: linear-gradient(90deg,
-                transparent 0%,
-                var(--wave-color-3) 20%,
-                transparent 45%,
-                var(--wave-color-3) 70%,
-                transparent 100%);
-            animation: wave-flow 42s cubic-bezier(0.36, 0.45, 0.63, 0.53) -10s infinite;
-            bottom: 20%;
-            opacity: 0.6;
-        }
+    .wave-dot{
+      position: absolute;
+      left: 0;
+      top: 0;
+      transform: translate(-50%, -50%);
+      border-radius: 999px;
+      will-change: transform, opacity;
+      transform-origin: center center;
+      filter: blur(0.1px);
+    }
 
-        @keyframes wave-flow {
-            0% {
-                transform: translateX(0) translateZ(0) scaleY(1);
-            }
-            50% {
-                transform: translateX(-25%) translateZ(0) scaleY(1.08);
-            }
-            100% {
-                transform: translateX(-50%) translateZ(0) scaleY(1);
-            }
-        }
+    .center{
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      z-index: 2;
+      width: min(760px, calc(100vw - 40px));
+      pointer-events: none;
+      animation: fadeIn 900ms ease-out both;
+    }
 
-        /* 海浪粒子光点 */
-        .particle {
-            position: absolute;
-            width: 3px;
-            height: 3px;
-            background: rgba(168, 85, 247, 0.4);
-            border-radius: 50%;
-            animation: particle-float 15s infinite;
-            opacity: 0;
-        }
+    .logo{
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 20px;
+      color: rgba(255,255,255,.96);
+      font-size: clamp(1rem, 1.5vw, 1.15rem);
+      font-weight: 600;
+      letter-spacing: -0.035em;
+      line-height: 1;
+      user-select: none;
+      text-shadow: 0 0 18px rgba(122,167,255,.14);
+    }
 
-        @keyframes particle-float {
-            0%, 100% { 
-                opacity: 0; 
-                transform: translateY(0) scale(0);
-            }
-            10% {
-                opacity: 1;
-                transform: translateY(-30px) scale(1);
-            }
-            90% {
-                opacity: 1;
-                transform: translateY(-600px) scale(0.5);
-            }
-        }
+    .logo svg{
+      width: 22px;
+      height: 22px;
+      flex: 0 0 auto;
+      filter: drop-shadow(0 0 14px rgba(122,167,255,.22));
+    }
 
-        /* ========== 优化液态玻璃效果 ========== */
-        .glass-card {
-            position: relative;
-            z-index: 10;
-            padding: 65px 85px;
-            background: var(--glass-base);
-            border-radius: 32px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(24px) saturate(180%);
-            -webkit-backdrop-filter: blur(24px) saturate(180%);
-            text-align: left;
-            max-width: 720px;
-            box-shadow: 
-                0 8px 32px rgba(0, 0, 0, 0.3),
-                inset 0 1px 0 rgba(255, 255, 255, 0.05),
-                0 0 0 1px rgba(168, 85, 247, 0.02);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            will-change: transform;
-            overflow: hidden;
-        }
+    .title{
+      margin: 0;
+      font-size: clamp(1.56rem, 3vw, 2.65rem);
+      line-height: 1.18;
+      font-weight: 500;
+      letter-spacing: -0.05em;
+      color: rgba(255,255,255,.96);
+      text-shadow: 0 0 22px rgba(255,255,255,.06);
+    }
 
-        /* 液态边缘光晕 */
-        .glass-card::before {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            background: linear-gradient(135deg, 
-                rgba(168, 85, 247, 0.2) 0%,
-                transparent 40%,
-                transparent 60%,
-                rgba(126, 34, 206, 0.15) 100%);
-            border-radius: 32px;
-            opacity: 0;
-            transition: opacity 0.6s ease;
-            z-index: -1;
-            filter: blur(8px);
-        }
+    .title .highlight{
+      color: #fff;
+      font-weight: 700;
+      background: linear-gradient(135deg, #ffffff 0%, #b8cbff 45%, #7aa7ff 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
 
-        .glass-card:hover::before {
-            opacity: 1;
-            animation: liquid-flow 3s ease-in-out infinite;
-        }
+    .sub{
+      margin: 16px auto 0;
+      max-width: 54ch;
+      font-size: clamp(.82rem, 1.15vw, .95rem);
+      line-height: 1.82;
+      color: var(--muted);
+      font-weight: 400;
+    }
 
-        @keyframes liquid-flow {
-            0%, 100% { 
-                transform: rotate(0deg) scale(1);
-            }
-            50% { 
-                transform: rotate(180deg) scale(1.02);
-            }
-        }
+    .meta{
+      margin-top: 14px;
+      font-size: .74rem;
+      color: rgba(255,255,255,.42);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
 
-        /* 液态波纹效果 */
-        .glass-card::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: radial-gradient(circle, 
-                rgba(168, 85, 247, 0.1) 0%, 
-                transparent 70%);
-            transform: translate(-50%, -50%);
-            transition: width 0.6s ease, height 0.6s ease;
-            pointer-events: none;
-        }
+    @keyframes fadeIn{
+      from{
+        opacity: 0;
+        transform: translate(-50%, -46%) scale(.985);
+        filter: blur(10px);
+      }
+      to{
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+        filter: blur(0);
+      }
+    }
 
-        .glass-card:hover::after {
-            width: 500px;
-            height: 500px;
-        }
+    @media (max-width: 768px){
+      .center{
+        width: calc(100vw - 28px);
+      }
+      .logo{
+        margin-bottom: 16px;
+      }
+      .title{
+        font-size: clamp(1.42rem, 6.2vw, 2.05rem);
+      }
+      .sub{
+        margin-top: 14px;
+        line-height: 1.68;
+      }
+      .meta{
+        margin-top: 12px;
+        letter-spacing: .08em;
+      }
+    }
 
-        .glass-card:hover {
-            border-color: rgba(168, 85, 247, 0.2);
-            box-shadow: 
-                0 12px 48px rgba(168, 85, 247, 0.15),
-                inset 0 1px 0 rgba(255, 255, 255, 0.1),
-                0 0 0 1px rgba(168, 85, 247, 0.1);
-        }
-
-        .brand {
-            font-size: 0.8rem;
-            letter-spacing: 0.6em;
-            color: rgba(255, 255, 255, 0.3);
-            text-transform: uppercase;
-            margin-bottom: 55px;
-            font-weight: 300;
-            position: relative;
-            z-index: 1;
-        }
-
-        .slogan {
-            font-size: clamp(2.2rem, 5vw, 3.4rem);
-            line-height: 1.15;
-            font-weight: 700;
-            color: #fff;
-            margin: 0;
-            letter-spacing: -1.5px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .highlight {
-            background: var(--primary-gradient);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            display: inline-block;
-            position: relative;
-        }
-
-        .highlight::after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: var(--primary-gradient);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .glass-card:hover .highlight::after {
-            opacity: 0.4;
-            animation: shimmer 2s ease-in-out infinite;
-        }
-
-        @keyframes shimmer {
-            0%, 100% { transform: scaleX(1); opacity: 0.4; }
-            50% { transform: scaleX(1.05); opacity: 0.6; }
-        }
-
-        .vision {
-            font-size: 1.1rem;
-            line-height: 1.8;
-            color: var(--text-base);
-            font-weight: 300;
-            border-left: 2px solid rgba(168, 85, 247, 0.3);
-            padding-left: 30px;
-            margin: 45px 0 60px 0;
-            position: relative;
-            z-index: 1;
-            transition: border-color 0.3s ease;
-        }
-
-        .glass-card:hover .vision {
-            border-left-color: rgba(168, 85, 247, 0.6);
-        }
-
-        .vision strong {
-            color: #e2e2e2;
-            font-weight: 500;
-        }
-
-        .footer {
-            font-size: 0.7rem;
-            color: rgba(255, 255, 255, 0.1);
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            position: relative;
-            z-index: 1;
-        }
-
-        @media (max-width: 768px) {
-            .glass-card { 
-                padding: 45px 30px; 
-                margin: 20px; 
-                border-radius: 24px; 
-            }
-            .slogan { font-size: 2.2rem; }
-            .vision { font-size: 1rem; margin: 35px 0; }
-            .wave { width: 400%; }
-        }
-    </style>
+    @media (prefers-reduced-motion: reduce){
+      *, *::before, *::after{
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
 </head>
 <body>
+  <div class="noise" aria-hidden="true"></div>
+  <div class="wave-layer" id="waveLayer" aria-hidden="true"></div>
 
-    <!-- 海浪背景 -->
-    <div class="ocean">
-        <div class="wave"></div>
-        <div class="wave"></div>
-        <div class="wave"></div>
+  <main class="center">
+    <div class="logo" aria-label="Tokencapless">
+      <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs>
+          <linearGradient id="tokencaplessLogoDark" x1="10" y1="54" x2="54" y2="10" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#4A7DFF"/>
+            <stop offset="34%" stop-color="#7C6BFF"/>
+            <stop offset="68%" stop-color="#B24DDE"/>
+            <stop offset="100%" stop-color="#FF8A66"/>
+          </linearGradient>
+        </defs>
+        <path d="M13 44C16 26 25 14 32 14C39 14 48 26 51 44" stroke="url(#tokencaplessLogoDark)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M20 44C23 31 27 22 32 22C37 22 41 31 44 44" stroke="rgba(255,255,255,0.95)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
+      </svg>
+      <span>TOKENCAPLESS</span>
     </div>
 
-    <div class="glass-card" id="glass">
-        <div class="brand">TOKENCAPLESS.COM</div>
-        
-        <h1 class="slogan">
-            Break the <span class="highlight">context barrier</span>.<br>
-            Think beyond the <span class="highlight">limits</span>.
-        </h1>
+    <p class="title">
+      Break the <span class="highlight">context barrier</span>.<br>
+      Think beyond the <span class="highlight">limits</span>.
+    </p>
 
-        <div class="vision">
-            We believe that <strong>intelligence should never be truncated</strong>. 
-            In the era of autonomous agents, the flow of logic is the new energy. 
-            Tokencapless is dedicated to a world where <strong>cognitive cost is no longer a constraint</strong> for innovation.
-        </div>
-
-        <div class="footer">
-            PROJECT INITIATED BY: PROFIT PIONEER
-        </div>
+    <div class="sub">
+      We believe that intelligence should never be truncated.
+      In the era of autonomous agents, the flow of logic is the new energy.
+      Tokencapless is dedicated to a world where cognitive cost is no longer a constraint for innovation.
     </div>
 
-    <script>
-        const glass = document.getElementById('glass');
-        const ocean = document.querySelector('.ocean');
-        
-        // 3D 视差效果
-        document.addEventListener('mousemove', (e) => {
-            const xAxis = (window.innerWidth / 2 - e.pageX) / 35;
-            const yAxis = (window.innerHeight / 2 - e.pageY) / 35;
-            
-            glass.style.transform = `
-                perspective(1000px)
-                rotateY(${xAxis}deg) 
-                rotateX(${yAxis}deg)
-                translateZ(10px)
-            `;
-        });
+    <div class="meta">
+      PROJECT INITIATED BY: PROFIT PIONEER
+    </div>
+  </main>
 
-        document.addEventListener('mouseleave', () => {
-            glass.style.transform = 'perspective(1000px) rotateY(0deg) rotateX(0deg) translateZ(0)';
-        });
+  <script>
+    const layer = document.getElementById('waveLayer');
 
-        // 生成海浪粒子
-        function createParticles() {
-            for (let i = 0; i < 15; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.bottom = Math.random() * 30 + '%';
-                particle.style.animationDelay = Math.random() * 15 + 's';
-                particle.style.animationDuration = (10 + Math.random() * 10) + 's';
-                ocean.appendChild(particle);
-            }
+    const COLORS = [
+      [74, 125, 255],
+      [124, 107, 255],
+      [178, 77, 222],
+      [255, 138, 102],
+      [255, 202, 40],
+      [122, 167, 255],
+      [255, 92, 92]
+    ];
+
+    const ripples = [];
+    const COUNT = 290;
+    const sources = [];
+
+    const center = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+    const pointer = { x: center.x, y: center.y };
+    const target = { x: center.x, y: center.y };
+
+    function rand(min, max){
+      return Math.random() * (max - min) + min;
+    }
+
+    function colorFor(i){
+      const c = COLORS[i % COLORS.length];
+      return `rgb(${c[0]} ${c[1]} ${c[2]})`;
+    }
+
+    function createRipples(){
+      layer.innerHTML = '';
+      ripples.length = 0;
+
+      const maxR = Math.hypot(window.innerWidth, window.innerHeight) * 0.56;
+
+      for(let i = 0; i < COUNT; i++){
+        const el = document.createElement('span');
+        el.className = 'wave-dot';
+
+        const angle = Math.random() * Math.PI * 2;
+        const radius = rand(0, maxR);
+        const size = rand(0.7, 2.0);
+        const aspect = rand(1.0, 2.0);
+        const drift = rand(0.00006, 0.00016);
+        const seed = rand(0, Math.PI * 2);
+
+        el.style.width = `${size * aspect}px`;
+        el.style.height = `${size}px`;
+        el.style.background = colorFor(i);
+        el.style.boxShadow = `0 0 ${size * 1.3}px ${colorFor(i)}`;
+        el.style.opacity = rand(0.03, 0.28);
+
+        layer.appendChild(el);
+
+        ripples.push({
+          el,
+          angle,
+          radius,
+          baseRadius: radius,
+          size,
+          aspect,
+          drift,
+          seed,
+          vx: 0,
+          vy: 0
+        });
+      }
+    }
+
+    function addSource(x, y, power = 1){
+      sources.push({
+        x, y,
+        born: performance.now(),
+        power
+      });
+    }
+
+    function animate(time){
+      pointer.x += (target.x - pointer.x) * 0.09;
+      pointer.y += (target.y - pointer.y) * 0.09;
+
+      if (Math.random() < 0.025) {
+        sources.push({
+          x: pointer.x,
+          y: pointer.y,
+          born: time,
+          power: 0.23
+        });
+      }
+
+      while (sources.length > 0 && time - sources[0].born > 6200) {
+        sources.shift();
+      }
+
+      for(const p of ripples){
+        p.angle += p.drift * 3.5;
+
+        const baseWave = Math.sin(time * 0.00018 + p.seed) * 0.07;
+        const microWave = Math.cos(time * 0.0001 + p.seed * 1.7) * 0.025;
+
+        p.radius += baseWave + microWave;
+        if (p.radius < 16) p.radius = p.baseRadius;
+        if (p.radius > Math.hypot(window.innerWidth, window.innerHeight) * 0.58) p.radius = rand(16, 60);
+
+        let x = center.x + Math.cos(p.angle) * p.radius;
+        let y = center.y + Math.sin(p.angle) * p.radius;
+
+        let influence = 0;
+        let wavePushX = 0;
+        let wavePushY = 0;
+        let waveAmount = 0;
+
+        for(const s of sources){
+          const age = (time - s.born) * 0.001;
+          const sx = x - s.x;
+          const sy = y - s.y;
+          const dist = Math.max(1, Math.hypot(sx, sy));
+          const radiusTravel = age * 155 * s.power;
+          const ring = Math.abs(dist - radiusTravel);
+          const ringStrength = Math.max(0, 1 - ring / 125) * Math.max(0, 1 - age / 5.6);
+
+          influence += ringStrength * s.power;
+          wavePushX += (sx / dist) * ringStrength * 1.12 * s.power;
+          wavePushY += (sy / dist) * ringStrength * 1.12 * s.power;
+          waveAmount += ringStrength;
         }
 
-        createParticles();
+        const mx = pointer.x - x;
+        const my = pointer.y - y;
+        const distMouse = Math.max(1, Math.hypot(mx, my));
+        const mouseInfluence = Math.max(0, 1 - distMouse / 700);
 
-        // 鼠标进入时增强液态效果
-        glass.addEventListener('mouseenter', function() {
-            this.style.backdropFilter = 'blur(28px) saturate(200%)';
-        });
+        p.vx += wavePushX * 0.03;
+        p.vy += wavePushY * 0.03;
+        p.vx += (mx / distMouse) * mouseInfluence * 0.022;
+        p.vy += (my / distMouse) * mouseInfluence * 0.022;
 
-        glass.addEventListener('mouseleave', function() {
-            this.style.backdropFilter = 'blur(24px) saturate(180%)';
-        });
-    </script>
+        p.vx *= 0.94;
+        p.vy *= 0.94;
+
+        x += p.vx;
+        y += p.vy;
+
+        const sizeWave = Math.sin(time * 0.0014 + p.seed + waveAmount * 2.2);
+        const stretch = 0.78 + influence * 1.06 + mouseInfluence * 0.38;
+        const squash = 0.72 + sizeWave * 0.05 + influence * 0.46;
+
+        const rotate = Math.atan2(p.vy + wavePushY, p.vx + wavePushX) * 180 / Math.PI;
+
+        p.el.style.transform =
+          `translate(${x}px, ${y}px) translate(-50%, -50%) rotate(${rotate}deg) scaleX(${stretch}) scaleY(${squash})`;
+        p.el.style.opacity = Math.max(0.03, Math.min(0.86, 0.03 + influence * 0.95 + mouseInfluence * 0.16));
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    function resize(){
+      center.x = window.innerWidth / 2;
+      center.y = window.innerHeight / 2;
+      target.x = center.x;
+      target.y = center.y;
+      createRipples();
+    }
+
+    document.addEventListener('pointermove', (e) => {
+      target.x = e.clientX;
+      target.y = e.clientY;
+    });
+
+    document.addEventListener('pointerdown', (e) => {
+      addSource(e.clientX, e.clientY, 2.0);
+      addSource(e.clientX, e.clientY, 1.25);
+      addSource(e.clientX, e.clientY, 0.85);
+    });
+
+    document.addEventListener('pointerleave', () => {
+      target.x = center.x;
+      target.y = center.y;
+    });
+
+    window.addEventListener('resize', resize);
+
+    createRipples();
+    requestAnimationFrame(animate);
+  </script>
 </body>
 </html>
